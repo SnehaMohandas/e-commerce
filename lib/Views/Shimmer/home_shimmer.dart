@@ -1,8 +1,6 @@
 import 'package:card_loading/card_loading.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class ShimmerHome extends StatelessWidget {
   ShimmerHome({super.key});

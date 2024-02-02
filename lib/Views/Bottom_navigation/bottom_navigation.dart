@@ -19,70 +19,68 @@ class BottomNavigation extends StatelessWidget {
     ),
   ];
   final NetworkController networkController = Get.put(NetworkController());
-  var navigationController = Get.put(NavigationController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(() {
-        if (networkController.isConnected.value) {
-          return Center(
+    return Obx(() {
+      if (networkController.isConnected.value == true) {
+        NavigationController navigationController =
+            Get.put(NavigationController());
+        return Scaffold(
+          body: Center(
             child: _pages.elementAt(navigationController.currentIndex.value),
-          );
-        } else {
-          return networkController.noDataImage(context);
-        }
-      }),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            selectedLabelStyle: TextStyle(fontFamily: "Roboto"),
-            unselectedLabelStyle: TextStyle(fontFamily: "Roboto"),
-
-            items: <BottomNavigationBarItem>[
-              const BottomNavigationBarItem(
-                icon: const Icon(Icons.home),
-                label: 'Home',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.vertical_distribute),
-                label: 'Categories',
-              ),
-              const BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage("assets/images/offer_icon.png")),
-                label: 'Offers',
-              ),
-              const BottomNavigationBarItem(
-                icon: Stack(children: [
-                  Icon(Icons.shopping_cart_rounded),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: CircleAvatar(
-                      radius: 7,
-                      child: Text(
-                        "1",
-                        style:
-                            TextStyle(color: ColorConstant.white, fontSize: 9),
-                      ),
-                      backgroundColor: ColorConstant.primaryColor,
-                    ),
-                  )
-                ]),
-                label: 'Cart',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Account',
-              ),
-            ],
-            currentIndex: navigationController
-                .currentIndex.value, // Use controller's index
-            selectedItemColor: ColorConstant.primaryColor,
-            unselectedItemColor: Colors.black38,
-            onTap: navigationController
-                .changeTabIndex, // Update the index through controller
-          )),
-    );
+          ),
+          bottomNavigationBar: Obx(() => BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                selectedLabelStyle: TextStyle(fontFamily: "Roboto"),
+                unselectedLabelStyle: TextStyle(fontFamily: "Roboto"),
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.vertical_distribute),
+                    label: 'Categories',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(AssetImage("assets/images/offer_icon.png")),
+                    label: 'Offers',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Stack(children: [
+                      Icon(Icons.shopping_cart_rounded),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: CircleAvatar(
+                          radius: 7,
+                          backgroundColor: ColorConstant.primaryColor,
+                          child: Text(
+                            "1",
+                            style: TextStyle(
+                                color: ColorConstant.white, fontSize: 9),
+                          ),
+                        ),
+                      )
+                    ]),
+                    label: 'Cart',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Account',
+                  ),
+                ],
+                currentIndex: navigationController.currentIndex.value,
+                selectedItemColor: ColorConstant.primaryColor,
+                unselectedItemColor: Colors.black38,
+                onTap: navigationController.changeTabIndex,
+              )),
+        );
+      } else {
+        return networkController.noDataImage(context);
+      }
+    });
   }
 }
 

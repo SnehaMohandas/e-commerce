@@ -1,5 +1,5 @@
+import 'package:get/get.dart';
 import 'package:hexeam_test/Views/Home/home_model.dart';
-import 'package:hexeam_test/const/const.dart';
 import 'package:http/http.dart' as http;
 
 class HttpServices {
@@ -11,6 +11,8 @@ class HttpServices {
       );
       if (response.statusCode == 200) {
         return homeModelFromJson(response.body);
+      } else {
+        Get.snackbar("Error occur", "falied to load the data");
       }
     } catch (e) {
       print(e);

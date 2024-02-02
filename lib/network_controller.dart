@@ -32,7 +32,7 @@ class NetworkController extends GetxController {
               Container(
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: MediaQuery.of(context).size.height * 0.2,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/no_internet.png'),
                   ),

@@ -1,348 +1,3 @@
-// import 'dart:convert';
-
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
-// import 'package:get/get_instance/get_instance.dart';
-// import 'package:get/get_state_manager/get_state_manager.dart';
-// import 'package:hexeam_test/Views/Home/home_controller.dart';
-// import 'package:hexeam_test/Views/Home/home_model.dart';
-// import 'package:hexeam_test/Views/Home/widgets/quantity_widget.dart';
-// import 'package:hexeam_test/Views/Shimmer/home_shimmer.dart';
-// import 'package:hexeam_test/utils/color_const.dart';
-
-// class HomeScreen extends StatelessWidget {
-//   HomeScreen({super.key});
-
-//   List cities = ["Koramangala", "India Nagar", "Kalyan Nagar", "Magestic"];
-//   @override
-//   Widget build(BuildContext context) {
-//     var homeController = Get.put(HomeController());
-
-//     return PopScope(
-//       canPop: false,
-//       onPopInvoked: (didPop) {
-//         exitDialogue(context);
-//       },
-//       child: Scaffold(
-//         appBar: AppBar(
-//           backgroundColor: ColorConstant.primaryColor,
-//           title: Row(
-//             children: [
-//               Container(
-//                 height: MediaQuery.of(context).size.height * 0.07,
-//                 width: MediaQuery.of(context).size.width * 0.07,
-//                 child: Image.asset(
-//                   "assets/images/appbar_logo.png",
-//                   color: ColorConstant.white,
-//                 ),
-//               ),
-//               const Text(
-//                 "LOREM IPSUM",
-//                 style: TextStyle(color: ColorConstant.white, fontSize: 10),
-//               )
-//             ],
-//           ),
-//           actions: [
-//             Padding(
-//               padding: const EdgeInsets.only(right: 30),
-//               child: Container(
-//                 width: 180,
-//                 height: 37,
-//                 decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(8),
-//                     border: Border.all(color: ColorConstant.white)),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Icon(
-//                       Icons.location_on,
-//                       size: 15,
-//                       color: ColorConstant.white,
-//                     ),
-//                     Obx(
-//                       () => Text(
-//                         "${homeController.city.value}",
-//                         // " Koramangala",
-//                         style:
-//                             TextStyle(color: ColorConstant.white, fontSize: 12),
-//                       ),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//         body: Obx(
-//           () => homeController.isLoading.value == true
-//               ? Center(child: ShimmerHome())
-//               : SingleChildScrollView(
-//                   child: Padding(
-//                     padding: const EdgeInsets.all(14),
-//                     child: Column(
-//                       children: [
-//                         Container(
-//                           height: 45,
-//                           width: double.infinity,
-//                           decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(10),
-//                               boxShadow: [
-//                                 BoxShadow(
-//                                   color: Colors.black.withOpacity(0.2),
-//                                   spreadRadius: 1,
-//                                   blurRadius: 2,
-//                                   offset: const Offset(0, 2),
-//                                 ),
-//                               ],
-//                               color: ColorConstant.white),
-//                           child: Center(
-//                             child: TextFormField(
-//                               decoration: const InputDecoration(
-//                                   contentPadding: EdgeInsets.all(10),
-//                                   border: InputBorder.none,
-//                                   hintText: "    Search For Dishes",
-//                                   hintStyle: TextStyle(
-//                                       fontSize: 14,
-//                                       color: ColorConstant.hintColor),
-//                                   prefixIcon: Icon(
-//                                     Icons.search,
-//                                     color: ColorConstant.primaryColor,
-//                                     size: 28,
-//                                   )),
-//                             ),
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: MediaQuery.of(context).size.height * 0.01,
-//                         ),
-//                         CarouselSlider(
-//                           options: CarouselOptions(
-//                               aspectRatio: 18 / 5,
-//                               viewportFraction: 1.0,
-//                               height: MediaQuery.of(context).size.height * 0.22,
-//                               autoPlay: true),
-//                           items: homeController.bannerImages.map((e) {
-//                             return Builder(builder: (BuildContext context) {
-//                               return Container(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.22,
-//                                 width: double.infinity,
-
-//                                 decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(10),
-//                                     image: DecorationImage(
-//                                         image: NetworkImage(
-//                                             "${homeController.homeModel!.bannerImagePath}$e"),
-//                                         fit: BoxFit.cover)),
-//                                 //child: Image.asset(e.toString())
-//                               );
-//                             });
-//                           }).toList(),
-//                         ),
-//                         SizedBox(
-//                           height: MediaQuery.of(context).size.height * 0.01,
-//                         ),
-//                         Container(
-//                           height: 40,
-//                           width: double.infinity,
-//                           color: ColorConstant.white,
-//                           child: ListView.builder(
-//                               itemCount: cities.length,
-//                               scrollDirection: Axis.horizontal,
-//                               //shrinkWrap: true,
-//                               //physics: const NeverScrollableScrollPhysics(),
-//                               itemBuilder: (context, index) {
-//                                 return Container(
-//                                     margin: const EdgeInsets.symmetric(
-//                                         horizontal: 4),
-//                                     height: 40,
-//                                     // width: 70,
-//                                     decoration: BoxDecoration(
-//                                         borderRadius: BorderRadius.circular(8),
-//                                         gradient: LinearGradient(
-//                                             colors: index % 2 == 0
-//                                                 ? [
-//                                                     Colors.red,
-//                                                     const Color.fromARGB(
-//                                                         255, 36, 11, 2),
-//                                                   ]
-//                                                 : [
-//                                                     const Color.fromARGB(
-//                                                         255, 36, 11, 2),
-//                                                     Colors.red,
-//                                                   ])),
-//                                     child: Center(
-//                                         child: Padding(
-//                                       padding:
-//                                           EdgeInsets.symmetric(horizontal: 10),
-//                                       child: Row(
-//                                         children: [
-//                                           Text(
-//                                             cities[index],
-//                                             style: TextStyle(
-//                                                 color: ColorConstant.white),
-//                                           ),
-//                                           Icon(Icons.navigate_next_outlined,
-//                                               color: ColorConstant.white)
-//                                         ],
-//                                       ),
-//                                     )));
-//                               }),
-//                         ),
-//                         ListView.builder(
-//                             shrinkWrap: true,
-//                             physics: const NeverScrollableScrollPhysics(),
-//                             itemCount: homeController
-//                                 .homeModel!.featuredCategories.length,
-//                             itemBuilder: (context, index) {
-//                               var pdts;
-
-//                               var category = homeController
-//                                   .homeModel!.featuredCategories[index];
-//                               var categoryId = category.itemCategoryId;
-
-//                               // Filter products based on the category id
-//                               List<FeaturedCategory> categoryProducts =
-//                                   homeController
-//                                       .homeModel!.featuredCategoriesProducts
-//                                       .where((product) =>
-//                                           product.itemCategoryId == categoryId)
-//                                       .toList();
-//                               if (categoryProducts.isNotEmpty) {
-//                                 print(categoryProducts[0]
-//                                     .branchProductVarients!
-//                                     .length);
-//                               }
-
-//                               return Column(
-//                                 crossAxisAlignment: CrossAxisAlignment.start,
-//                                 children: [
-//                                   Text(
-//                                     category.categoryName,
-//                                     style: TextStyle(
-//                                         fontWeight: FontWeight.bold,
-//                                         fontSize: 18),
-//                                   ),
-//                                   categoryProducts.isNotEmpty
-//                                       ? SizedBox(
-//                                           height: 150,
-//                                           child: ListView.builder(
-//                                               itemCount: categoryProducts[0]
-//                                                   .branchProductVarients!
-//                                                   .length,
-//                                               scrollDirection: Axis.horizontal,
-//                                               itemBuilder: (context, subIndex) {
-//                                                 //categoryProductss.length;
-//                                                 return GestureDetector(
-//                                                   onTap: () {
-//                                                     print("kkkk${index}");
-//                                                     print("oooo${subIndex}");
-//                                                   },
-//                                                   child: Container(
-//                                                     height: 100,
-//                                                     margin:
-//                                                         const EdgeInsets.all(8),
-//                                                     decoration: BoxDecoration(
-//                                                         color: Colors.amber,
-//                                                         image: DecorationImage(
-//                                                             image: NetworkImage(
-//                                                                 "${homeController.homeModel!.productImagePath}${categoryProducts[0].branchProductVarients![subIndex].productVarientBaseImage}"),
-//                                                             fit: BoxFit.cover)),
-//                                                     width: 160.0,
-//                                                     child: Column(
-//                                                       children: [
-//                                                         Icon(
-//                                                             Icons
-//                                                                 .radio_button_checked_rounded,
-//                                                             color: categoryProducts[
-//                                                                             0]
-//                                                                         .branchProductVarients![
-//                                                                             subIndex]
-//                                                                         .inWishlist ==
-//                                                                     1
-//                                                                 ? Colors.green
-//                                                                 : categoryProducts[0]
-//                                                                             .branchProductVarients![
-//                                                                                 subIndex]
-//                                                                             .inWishlist ==
-//                                                                         2
-//                                                                     ? Colors.red
-//                                                                     : Colors
-//                                                                         .yellow),
-//                                                         Text(
-//                                                           categoryProducts[0]
-//                                                               .branchProductVarients![
-//                                                                   subIndex]
-//                                                               .variantName,
-//                                                           style: const TextStyle(
-//                                                               color:
-//                                                                   ColorConstant
-//                                                                       .white),
-//                                                         ),
-//                                                         AddQuantityContainer(
-//                                                             context,
-//                                                             index,
-//                                                             subIndex)
-//                                                       ],
-//                                                     ),
-//                                                   ),
-//                                                 );
-//                                               }),
-//                                         )
-//                                       : const Text(
-//                                           "Fresh Recipes Brewing. Stay Tuned!"),
-//                                   index == 1
-//                                       ? CarouselSlider(
-//                                           options: CarouselOptions(
-//                                               aspectRatio: 18 / 5,
-//                                               viewportFraction: 1.0,
-//                                               height: MediaQuery.of(context)
-//                                                       .size
-//                                                       .height *
-//                                                   0.18,
-//                                               autoPlay: true),
-//                                           items: homeController.bannerImages
-//                                               .map((e) {
-//                                             return Builder(builder:
-//                                                 (BuildContext context) {
-//                                               return Container(
-//                                                 height: MediaQuery.of(context)
-//                                                         .size
-//                                                         .height *
-//                                                     0.18,
-//                                                 width: double.infinity,
-
-//                                                 decoration: BoxDecoration(
-//                                                     borderRadius:
-//                                                         BorderRadius.circular(
-//                                                             10),
-//                                                     image: DecorationImage(
-//                                                         image: NetworkImage(
-//                                                             "${homeController.homeModel!.bannerImagePath}$e"),
-//                                                         fit: BoxFit.cover)),
-//                                                 //child: Image.asset(e.toString())
-//                                               );
-//                                             });
-//                                           }).toList(),
-//                                         )
-//                                       : SizedBox(),
-//                                 ],
-//                               );
-//                               // );
-//                             })
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//=============================
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -356,10 +11,7 @@ import 'package:hexeam_test/utils/color_const.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-  List images = [
-    "https://www.usatoday.com/gcdn/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg",
-    "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?cs=srgb&dl=pexels-pixabay-258154.jpg&fm=jpg"
-  ];
+
   List cities = ["Koramangala", "India Nagar", "Kalyan Nagar", "Magestic"];
   @override
   Widget build(BuildContext context) {
@@ -620,36 +272,31 @@ class HomeScreen extends StatelessWidget {
                                             child: Stack(
                                               children: [
                                                 Container(
-                                                  height: 200,
-                                                  width: 170.0,
+                                                  height: 190,
+                                                  width: 132.0,
                                                   decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      image: const DecorationImage(
-                                                          image: NetworkImage(
-                                                              "https://qul.imgix.net/c0ceec9e-3a9d-47bf-ae63-164a8d5e5a30/606100_sld.jpg"),
-                                                          fit: BoxFit.cover),
-                                                      gradient:
-                                                          const LinearGradient(
-                                                              colors: [
-                                                            Colors.black38,
-                                                            Colors.black54
-                                                          ])),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    image: const DecorationImage(
+                                                        image: AssetImage(
+                                                            "assets/images/no_item.jpeg"),
+                                                        fit: BoxFit.cover),
+                                                  ),
                                                 ),
                                                 Container(
-                                                  height: 200,
-                                                  width: 170.0,
+                                                  height: 190,
+                                                  width: 132.0,
                                                   decoration: BoxDecoration(
                                                     color: Colors.black45
-                                                        .withOpacity(0.5),
+                                                        .withOpacity(0.3),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
                                                   ),
                                                   child: const Center(
                                                     child: Text(
-                                                      "Fresh Recipes Brewing. Stay Tuned!\n ",
+                                                      "CURRENTLY\n NOT AVAILABLE ",
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(

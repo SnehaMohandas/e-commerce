@@ -19,11 +19,9 @@ class HomeController extends GetxController {
     if (data != null) {
       homeModel = data;
       isLoading.value = false;
-      print(homeModel!.featuredCategories);
       for (int i = 0; i < homeModel!.homeSliders.length; i++) {
         bannerImages.addAll([homeModel!.homeSliders[i].customerBanner]);
       }
-      print(bannerImages);
     }
   }
 
@@ -31,7 +29,6 @@ class HomeController extends GetxController {
     LocationPermission permission = await Geolocator.requestPermission();
 
     if (permission == LocationPermission.denied) {
-      print("Location permission denied");
       Get.snackbar("Location", "Permission denied");
       return;
     }
@@ -39,8 +36,6 @@ class HomeController extends GetxController {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    print("Current location: ${position.latitude}, ${position.longitude}");
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -52,12 +47,8 @@ class HomeController extends GetxController {
         Placemark place = placemarks.first;
         city.value = place.locality!;
         country.value = place.country!;
-
-        print("Current city: $city, $country");
       }
-    } catch (e) {
-      print("Failed to get city name: $e");
-    }
+    } catch (e) {}
   }
 
   @override
